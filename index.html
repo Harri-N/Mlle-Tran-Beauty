@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mlle Tran Beauty | Salon du Regard - Mons</title>
+    <meta name="description" content="Mlle Tran Beauty, salon du regard à Mons. Extensions de cils, Lash Lift, Brow Lift, Restructuration des sourcils. Prenez rendez-vous avec Morgane, votre Brow & Lash Artist.">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream:      '#FAF7F2',
+                        sand:       '#EDE8DF',
+                        beige:      '#E5DDD1',
+                        gold:       '#B8936A',
+                        'gold-lt':  '#D4B896',
+                        anthracite: '#2A2A2A',
+                        warm:       '#FDFAF6',
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+                        sans:  ['"DM Sans"', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: #FDFAF6;
+            color: #2A2A2A;
+        }
+
+        /* ── Hero ── */
+        .hero-bg {
+            background:
+                linear-gradient(150deg, rgba(250,247,242,0.82) 0%, rgba(237,232,223,0.78) 55%, rgba(224,216,204,0.75) 100%),
+                url('images/background.png') center center / cover no-repeat;
+        }
+
+        /* ── Divider ── */
+        .divider-gold {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, #B8936A 50%, transparent 100%);
+        }
+
+        /* ── Scroll-fade animation ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.75s ease, transform 0.75s ease;
+        }
+        .reveal.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── Navbar ── */
+        #navbar {
+            transition: background 0.35s ease, box-shadow 0.35s ease;
+        }
+        #navbar.scrolled {
+            background: rgba(253,250,246,0.96);
+            box-shadow: 0 1px 24px rgba(0,0,0,0.06);
+            backdrop-filter: blur(12px);
+        }
+
+        /* ── CTA button fill ── */
+        .btn-outline {
+            position: relative;
+            overflow: hidden;
+            z-index: 0;
+            transition: color 0.35s ease;
+        }
+        .btn-outline::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: #B8936A;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.35s ease;
+            z-index: -1;
+        }
+        .btn-outline:hover::after  { transform: scaleX(1); }
+        .btn-outline:hover         { color: #FDFAF6; }
+
+        /* ── Price item hover ── */
+        .price-row:hover {
+            background-color: rgba(184,147,106,0.06);
+            border-radius: 6px;
+        }
+
+        /* ── Info card hover ── */
+        .info-card {
+            border: 1px solid rgba(184,147,106,0.18);
+            transition: border-color 0.3s, transform 0.3s;
+        }
+        .info-card:hover {
+            border-color: rgba(184,147,106,0.5);
+            transform: translateY(-3px);
+        }
+
+        /* ── Arch top for price list ── */
+        .arch-top {
+            border-radius: 48% 48% 0 0 / 6% 6% 0 0;
+        }
+
+        /* ── Gallery ── */
+        .gallery-card { cursor: pointer; user-select: none; }
+        .gallery-card img { transition: opacity 0.45s ease; }
+
+        /* ── Mobile nav animation ── */
+        #mobileNav {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        #mobileNav.nav-hidden {
+            opacity: 0;
+            transform: translateY(-14px);
+            pointer-events: none;
+        }
+        #mobileNav a {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        #mobileNav.nav-hidden a {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+
+        /* ── Burger → X ── */
+        #b1, #b2, #b3 { transition: transform 0.35s ease, opacity 0.35s ease, width 0.35s ease; }
+        #burgerBtn.open #b1 { transform: translateY(6px) rotate(45deg); }
+        #burgerBtn.open #b2 { opacity: 0; transform: scaleX(0); }
+        #burgerBtn.open #b3 { transform: translateY(-6px) rotate(-45deg); width: 22px; }
+
+        /* ── Scroll indicator pulse ── */
+        @keyframes scrollDown {
+            0%   { opacity: 0.6; transform: translateY(0); }
+            60%  { opacity: 0.1; transform: translateY(16px); }
+            100% { opacity: 0; }
+        }
+        .scroll-arrow {
+            animation: scrollDown 1.8s ease infinite;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+<!-- ═══════════════════════════ NAVBAR ═══════════════════════════ -->
+<nav id="navbar" class="fixed top-0 inset-x-0 z-50 px-6 md:px-14 py-5 flex items-center justify-between">
+    <a href="#" class="font-serif tracking-[0.18em] text-sm uppercase text-anthracite">
+        Mlle Tran Beauty
+    </a>
+
+    <!-- Desktop links -->
+    <ul class="hidden md:flex items-center gap-10 text-[11px] tracking-[0.28em] uppercase text-anthracite/70">
+        <li><a href="#about"    class="hover:text-gold transition-colors duration-200">À Propos</a></li>
+        <li><a href="#services" class="hover:text-gold transition-colors duration-200">Services</a></li>
+        <li><a href="#galerie"  class="hover:text-gold transition-colors duration-200">Galerie</a></li>
+        <li><a href="#infos"    class="hover:text-gold transition-colors duration-200">Infos</a></li>
+        <li>
+            <!-- <a href="tel:+32498451649"
+               class="border border-gold/50 text-gold px-4 py-2 text-[10px] tracking-[0.25em] hover:bg-gold hover:text-warm transition-all duration-300">
+                Réserver
+            </a> -->
+        </li>
+    </ul>
+
+    <!-- Mobile hamburger -->
+    <button id="burgerBtn" onclick="toggleNav()" class="md:hidden flex flex-col gap-[5px] p-1">
+        <span class="w-[22px] h-px bg-anthracite block transition-all duration-300" id="b1"></span>
+        <span class="w-[22px] h-px bg-anthracite block transition-all duration-300" id="b2"></span>
+        <span class="w-[14px] h-px bg-anthracite block transition-all duration-300" id="b3"></span>
+    </button>
+</nav>
+
+<!-- Mobile Menu Overlay -->
+<div id="mobileNav"
+     class="fixed inset-0 z-40 bg-warm flex flex-col items-center justify-center gap-10 nav-hidden">
+    <a href="#about"    onclick="toggleNav()" class="font-serif text-4xl text-anthracite hover:text-gold transition-colors">À Propos</a>
+    <a href="#services" onclick="toggleNav()" class="font-serif text-4xl text-anthracite hover:text-gold transition-colors">Services</a>
+    <a href="#galerie"  onclick="toggleNav()" class="font-serif text-4xl text-anthracite hover:text-gold transition-colors">Galerie</a>
+    <a href="#infos"    onclick="toggleNav()" class="font-serif text-4xl text-anthracite hover:text-gold transition-colors">Infos</a>
+    <!-- <a href="tel:+32498451649" onclick="toggleNav()" class="font-serif text-4xl text-anthracite hover:text-gold transition-colors">+32 498 45 16 49</a>
+    <a href="https://instagram.com/mlle.tranbeauty" target="_blank" class="text-xs tracking-widest text-gold uppercase">@mlle.tranbeauty</a> -->
+</div>
+
+
+<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
+<section class="hero-bg min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden">
+
+
+
+
+    <!-- Main title block - inspired by brand cover -->
+    <div class="reveal mb-9">
+        <h1 class="font-serif font-light text-anthracite uppercase leading-none"
+            style="font-size: clamp(2.4rem, 6vw, 6.5rem); letter-spacing: 0.12em;">
+            Mlle Tran Beauty
+        </h1>
+        <!-- Ruled separator between the two identity lines -->
+        <div class="flex items-center justify-center gap-5 my-5">
+            <span class="h-px flex-1 max-w-[100px] bg-gold/40 block"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-gold/60 block"></span>
+            <span class="h-px flex-1 max-w-[100px] bg-gold/40 block"></span>
+        </div>
+        <p class="font-serif font text-anthracite uppercase tracking-[0.32em]"
+           style="font-size: clamp(0.85rem, 2.5vw, 2rem);">
+            Salon du Regard
+        </p>
+    </div>
+
+    <!-- Tagline -->
+    <p class="reveal font-serif italic text-anthracite/80 mb-10"
+       style="font-size: clamp(0.95rem, 2vw, 1.3rem); letter-spacing: 0.04em;">
+        Your Brow &amp; Lash Artist
+    </p>
+
+    <!-- CTA -->
+    <a href="#services"
+       class="reveal btn-outline border border-gold text-gold bg-warm/60 backdrop-blur-sm px-10 py-3.5 text-[10px] tracking-[0.35em] uppercase font-medium">
+        Découvrir les Services
+    </a>
+
+    <!-- Scroll cue -->
+    <div aria-hidden="true" class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-30">
+        <span class="text-[9px] tracking-[0.4em] uppercase text-anthracite">Scroll</span>
+        <svg class="scroll-arrow w-4 h-4 text-anthracite" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
+        </svg>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════ ABOUT ═══════════════════════════ -->
+<section id="about" class="py-28 md:py-40 px-6 md:px-14 max-w-6xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-14 lg:gap-24 items-center">
+
+        <!-- Visual -->
+        <div class="reveal flex justify-center md:justify-start order-1">
+            <div class="relative">
+                <!-- Arch card -->
+                <div class="w-[270px] md:w-[300px] bg-sand arch-top pt-8 pb-10 px-8 text-center relative">
+                    <div class="w-36 h-36 mx-auto rounded-full overflow-hidden border border-gold/25 mb-4">
+                        <img src="images/Morgane.png" alt="Morgane Tran" class="w-full h-full object-cover object-top">
+                    </div>
+                    <p class="text-[12px] tracking-[0.35em] uppercase text-anthracite/50 mb-8">Morgane Tran</p>
+                    <div class="space-y-3.5 text-left">
+
+                    </div>
+                </div>
+                <!-- Floating circles -->
+                <div aria-hidden="true" class="absolute -bottom-5 -right-5 w-20 h-20 border border-gold/25 rounded-full"></div>
+                <div aria-hidden="true" class="absolute -top-5 -left-5 w-14 h-14 border border-gold/15 rounded-full"></div>
+            </div>
+        </div>
+
+        <!-- Text -->
+        <div class="reveal order-2">
+            <h2 class="font-serif font-light text-anthracite leading-tight mb-6"
+                style="font-size: clamp(2.4rem, 5vw, 3.5rem);">
+                Meet Your <em class="italic">Artist</em>
+            </h2>
+            <hr class="divider-gold mb-7 w-20">
+
+            <p class="text-[17px] leading-relaxed text-anthracite/75 mb-4">
+                Je suis <span class="font-medium text-anthracite">Morgane</span>, artiste spécialisée dans l'embellissement du regard depuis plus de 5 ans. Mon parcours a débuté comme commerciale et esthéticienne, avant de me perfectionner en spa, puis dans des salons spécialisés en eye-beauty.
+            </p>
+            <p class="text-[17px] leading-relaxed text-anthracite/75 mb-4">
+                Aujourd'hui, j'ai fondé mon propre studio dédié à révéler la beauté naturelle de chaque regard à travers l'art des sourcils et des cils. Chaque prestation est pensée pour sublimer <em>votre</em> regard, pas pour le transformer.
+            </p>
+            <p class="text-[17px] leading-relaxed text-anthracite/75 mb-9">
+                La formation continue est au cœur de ma démarche. Je m'engage à maîtriser les techniques les plus actuelles pour vous offrir des résultats d'excellence, dans un cadre intime et apaisant.
+            </p>
+
+            <blockquote class="border-l-2 border-gold pl-5 font-serif text-[1.1rem] italic text-anthracite/60 leading-relaxed">
+                "Fall in love with the nuances of growth -<br>
+                celebrate the little milestones, not just the big ones."
+            </blockquote>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════ SERVICES & TARIFS ═══════════════════════════ -->
+<section id="services" class="bg-sand py-28 md:py-36">
+    <div class="max-w-4xl mx-auto px-6">
+
+        <!-- Header -->
+        <div class="text-center mb-16 reveal">
+            <h2 class="font-serif font-light text-anthracite"
+                style="font-size: clamp(2.5rem, 6vw, 4rem);">
+                Services &amp; Tarifs
+            </h2>
+            <div class="flex items-center justify-center gap-5 mt-5">
+                <span class="h-px w-14 bg-gold/50"></span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-2.5 h-2.5 text-gold" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2l2.09 6.26L20 10l-5.91 2.74L12 22l-2.09-9.26L4 10l5.91-1.74z"/>
+                </svg>
+                <span class="h-px w-14 bg-gold/50"></span>
+            </div>
+        </div>
+
+        <!-- Card with arch top -->
+        <div class="reveal bg-warm shadow-sm overflow-hidden" style="border-radius: 50% 50% 0 0 / 5% 5% 0 0;">
+            <div class="px-8 md:px-16 pt-16 pb-14">
+
+                <!-- ─── Épilations & Teintures ─── -->
+                <div class="mb-11 reveal">
+                    <h3 class="font-serif text-[20px] tracking-[0.35em] uppercase text-gold mb-2">
+                        Épilations &amp; Teintures
+                    </h3>
+                    <hr class="divider-gold mb-5">
+                    <div class="space-y-1">
+                        <div class="price-row flex justify-between items-center py-2.5 px-2 transition-colors">
+                            <span class="text-[15px] tracking-wide text-anthracite/75">Restructuration des sourcils</span>
+                            <span class="font-serif text-[1.15rem] text-anthracite ml-4 flex-shrink-0">30 €</span>
+                        </div>
+                        <div class="price-row flex justify-between items-start py-2.5 px-2 transition-colors">
+                            <span class="text-[15px] tracking-wide text-anthracite/75 leading-snug">
+                                Restructuration des sourcils<br>
+                                <span class="text-[14px] text-anthracite/45">+ Teinture sourcils simple</span>
+                            </span>
+                            <span class="font-serif text-[1.15rem] text-anthracite ml-4 flex-shrink-0 mt-0.5">35 €</span>
+                        </div>
+                        <div class="price-row flex justify-between items-start py-2.5 px-2 transition-colors">
+                            <span class="text-[15px] tracking-wide text-anthracite/75 leading-snug">
+                                Restructuration des sourcils - à la décoloration<br>
+                                <span class="text-[14px] text-anthracite/45">Teinture comprise</span>
+                            </span>
+                            <span class="font-serif text-[1.15rem] text-anthracite ml-4 flex-shrink-0 mt-0.5">70 €</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ─── Lash & Brow Lift ─── -->
+                <div class="mb-11 reveal">
+                    <h3 class="font-serif text-[20px] tracking-[0.35em] uppercase text-gold mb-2">
+                        Lash &amp; Brow Lift
+                    </h3>
+                    <hr class="divider-gold mb-5">
+                    <div class="grid sm:grid-cols-2 gap-x-8 gap-y-1">
+                        <div class="price-row flex justify-between items-start py-2.5 px-2 transition-colors">
+                            <span class="text-[15px] text-anthracite/75 leading-snug">
+                                Lash Lift<br>
+                                <span class="text-[14px] text-anthracite/45">Teinture comprise</span>
+                            </span>
+                            <span class="font-serif text-[1.15rem] text-anthracite ml-4 flex-shrink-0 mt-0.5">70 €</span>
+                        </div>
+                        <div class="price-row flex justify-between items-start py-2.5 px-2 transition-colors">
+                            <span class="text-[15px] text-anthracite/75 leading-snug">
+                                Brow Lift<br>
+                                <span class="text-[14px] text-anthracite/45">Épilation &amp; Teinture comprises</span>
+                            </span>
+                            <span class="font-serif text-[1.15rem] text-anthracite ml-4 flex-shrink-0 mt-0.5">80 €</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ─── Extensions de Cils ─── -->
+                <div class="mb-11 reveal">
+                    <h3 class="font-serif text-[20px] tracking-[0.35em] uppercase text-gold mb-2">
+                        Extensions de Cils
+                    </h3>
+                    <hr class="divider-gold mb-5">
+                    <div class="grid sm:grid-cols-2 gap-x-8">
+
+                        <!-- Nouvelle pose -->
+                        <div>
+                            <p class="text-[15px] tracking-[0.25em] uppercase text-anthracite/40 mb-3">Nouvelle Pose</p>
+                            <div class="space-y-1">
+                                <div class="price-row flex justify-between items-center py-2 px-2 transition-colors">
+                                    <span class="text-[15px] text-anthracite/75">Cil à cil</span>
+                                    <span class="font-serif text-[1.15rem] text-anthracite ml-3 flex-shrink-0">100 €</span>
+                                </div>
+                                <div class="price-row flex justify-between items-center py-2 px-2 transition-colors">
+                                    <span class="text-[15px] text-anthracite/75">Volume léger / Russe</span>
+                                    <span class="font-serif text-[1.15rem] text-anthracite ml-3 flex-shrink-0">120 €</span>
+                                </div>
+                                <div class="price-row flex justify-between items-center py-2 px-2 transition-colors">
+                                    <span class="text-[15px] text-anthracite/75">Mascara</span>
+                                    <span class="font-serif text-[1.15rem] text-anthracite ml-3 flex-shrink-0">120 €</span>
+                                </div>
+                                <div class="price-row flex justify-between items-center py-2 px-2 transition-colors">
+                                    <span class="text-[15px] text-anthracite/75">Wispy</span>
+                                    <span class="font-serif text-[1.15rem] text-anthracite ml-3 flex-shrink-0">120 €</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Retouches + Dépose -->
+                        <div class="mt-8 sm:mt-0">
+                            <p class="text-[15px] tracking-[0.25em] uppercase text-anthracite/40 mb-3">Retouches</p>
+                            <div class="space-y-1">
+                                <div class="price-row flex justify-between items-center py-2 px-2 transition-colors">
+                                    <span class="text-[15px] text-anthracite/75">1h00</span>
+                                    <span class="font-serif text-[1.15rem] text-anthracite ml-3 flex-shrink-0">70 €</span>
+                                </div>
+                                <div class="price-row flex justify-between items-center py-2 px-2 transition-colors">
+                                    <span class="text-[15px] text-anthracite/75">1h30</span>
+                                    <span class="font-serif text-[1.15rem] text-anthracite ml-3 flex-shrink-0">80 €</span>
+                                </div>
+                            </div>
+                            <div class="mt-5 pt-4 border-t border-gold/15">
+                                <p class="text-[15px] tracking-[0.25em] uppercase text-anthracite/40 mb-3">Dépose</p>
+                                <div class="price-row flex justify-between items-center py-2 px-2 transition-colors">
+                                    <span class="text-[15px] text-anthracite/75">Dépose des extensions</span>
+                                    <span class="font-serif text-[1.15rem] text-anthracite ml-3 flex-shrink-0">20 €</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ─── Brow Henna + Combos ─── -->
+                <div class="grid sm:grid-cols-2 gap-x-8 reveal">
+
+                    <!-- Brow Henna -->
+                    <div class="mb-10 sm:mb-0">
+                        <h3 class="font-serif text-[20px] tracking-[0.35em] uppercase text-gold mb-2">
+                            Brow Henna
+                        </h3>
+                        <hr class="divider-gold mb-5">
+                        <div class="price-row flex justify-between items-start py-2.5 px-2 transition-colors">
+                            <span class="text-[15px] text-anthracite/75 leading-snug">
+                                Brow Henna<br>
+                                <span class="text-[14px] text-anthracite/45">Épilation comprise</span>
+                            </span>
+                            <span class="font-serif text-[1.15rem] text-anthracite ml-4 flex-shrink-0 mt-0.5">50 €</span>
+                        </div>
+                    </div>
+
+                    <!-- Combos -->
+                    <div>
+                        <h3 class="font-serif text-[20px] tracking-[0.35em] uppercase text-gold mb-2">
+                            Combos
+                        </h3>
+                        <hr class="divider-gold mb-5">
+                        <div class="space-y-1">
+                            <div class="price-row flex justify-between items-center py-2.5 px-2 transition-colors">
+                                <span class="text-[15px] text-anthracite/75">Lash Lift + Brow Lift</span>
+                                <span class="font-serif text-[1.15rem] text-anthracite ml-4 flex-shrink-0">140 €</span>
+                            </div>
+                            <div class="price-row flex justify-between items-start py-2.5 px-2 transition-colors">
+                                <span class="text-[15px] text-anthracite/75 leading-snug">
+                                    Restructuration des sourcils<br>+ Lash Lift
+                                </span>
+                                <span class="font-serif text-[1.15rem] text-anthracite ml-4 flex-shrink-0 mt-0.5">100 €</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer of card -->
+                <div class="mt-12 pt-8 border-t border-gold/15 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <p class="text-[13px] text-anthracite/40 tracking-wide text-center sm:text-left">
+                        Pour plus de renseignements, n'hésitez pas à me contacter
+                    </p>
+                    <div class="flex flex-wrap items-center justify-center gap-5">
+                        <a href="https://instagram.com/mlle.tranbeauty" target="_blank"
+                           class="text-[11px] tracking-widest uppercase text-gold hover:text-anthracite transition-colors duration-200">
+                            @mlle.tranbeauty
+                        </a>
+                        <a href="tel:+32498451649"
+                           class="text-[11px] tracking-wide text-anthracite/45 hover:text-gold transition-colors duration-200">
+                            +32 498 45 16 49
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════ GALERIE ═══════════════════════════ -->
+<section id="galerie" class="py-28 md:py-36">
+    <div class="max-w-6xl mx-auto px-6 md:px-14">
+
+        <!-- Header -->
+        <div class="text-center mb-16 reveal">
+            <h2 class="font-serif font-light text-anthracite"
+                style="font-size: clamp(2.5rem, 6vw, 4rem);">
+                Mes <em class="italic">Réalisations</em>
+            </h2>
+            <div class="flex items-center justify-center gap-5 mt-5">
+                <span class="h-px w-14 bg-gold/50"></span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-2.5 h-2.5 text-gold" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2l2.09 6.26L20 10l-5.91 2.74L12 22l-2.09-9.26L4 10l5.91-1.74z"/>
+                </svg>
+                <span class="h-px w-14 bg-gold/50"></span>
+            </div>
+            <p class="mt-5 text-[16px] text-anthracite/55 max-w-sm mx-auto leading-relaxed">
+                Cliquez sur une photo pour faire apparaître l'avant.
+            </p>
+        </div>
+
+        <!-- Grid 2×4 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+
+            <div class="gallery-card reveal relative overflow-hidden rounded-xl aspect-[4/5]"
+                 data-showing="after" onclick="toggleCard(this)">
+                <img class="img-after absolute inset-0 w-full h-full object-cover object-top"
+                     src="images/galerie/01_after.jpg" alt="Réalisation sourcils - après">
+                <img class="img-before absolute inset-0 w-full h-full object-cover object-top opacity-0"
+                     src="images/galerie/01_before.jpg" alt="Réalisation sourcils - avant">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent pointer-events-none"></div>
+                <div class="absolute bottom-3 inset-x-3 flex items-center justify-between">
+                    <span class="card-state text-[11px] tracking-[0.2em] uppercase text-white font-medium bg-black/30 backdrop-blur-sm px-2.5 py-1 rounded-full">Après</span>
+                    <svg class="w-8 h-8 text-white/50" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/></svg>
+                </div>
+            </div>
+
+            <div class="gallery-card reveal relative overflow-hidden rounded-xl aspect-[4/5]"
+                 data-showing="after" onclick="toggleCard(this)">
+                <img class="img-after absolute inset-0 w-full h-full object-cover object-top"
+                     src="images/galerie/02_after.jpg" alt="Réalisation - après">
+                <img class="img-before absolute inset-0 w-full h-full object-cover object-top opacity-0"
+                     src="images/galerie/02_before.jpg" alt="Réalisation - avant">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent pointer-events-none"></div>
+                <div class="absolute bottom-3 inset-x-3 flex items-center justify-between">
+                    <span class="card-state text-[11px] tracking-[0.2em] uppercase text-white font-medium bg-black/30 backdrop-blur-sm px-2.5 py-1 rounded-full">Après</span>
+                    <svg class="w-8 h-8 text-white/50" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/></svg>
+                </div>
+            </div>
+
+            <div class="gallery-card reveal relative overflow-hidden rounded-xl aspect-[4/5]"
+                 data-showing="after" onclick="toggleCard(this)">
+                <img class="img-after absolute inset-0 w-full h-full object-cover object-top"
+                     src="images/galerie/03_after.jpg" alt="Réalisation combo - après">
+                <img class="img-before absolute inset-0 w-full h-full object-cover object-top opacity-0"
+                     src="images/galerie/03_before.jpg" alt="Réalisation combo - avant">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent pointer-events-none"></div>
+                <div class="absolute bottom-3 inset-x-3 flex items-center justify-between">
+                    <span class="card-state text-[11px] tracking-[0.2em] uppercase text-white font-medium bg-black/30 backdrop-blur-sm px-2.5 py-1 rounded-full">Après</span>
+                    <svg class="w-8 h-8 text-white/50" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/></svg>
+                </div>
+            </div>
+
+            <div class="gallery-card reveal relative overflow-hidden rounded-xl aspect-[4/5]"
+                 data-showing="after" onclick="toggleCard(this)">
+                <img class="img-after absolute inset-0 w-full h-full object-cover object-top"
+                     src="images/galerie/04_after.jpg" alt="Réalisation - après">
+                <img class="img-before absolute inset-0 w-full h-full object-cover object-top opacity-0"
+                     src="images/galerie/04_before.jpg" alt="Réalisation - avant">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent pointer-events-none"></div>
+                <div class="absolute bottom-3 inset-x-3 flex items-center justify-between">
+                    <span class="card-state text-[11px] tracking-[0.2em] uppercase text-white font-medium bg-black/30 backdrop-blur-sm px-2.5 py-1 rounded-full">Après</span>
+                    <svg class="w-8 h-8 text-white/50" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/></svg>
+                </div>
+            </div>
+
+            <div class="gallery-card reveal relative overflow-hidden rounded-xl aspect-[4/5]"
+                 data-showing="after" onclick="toggleCard(this)">
+                <img class="img-after absolute inset-0 w-full h-full object-cover object-top"
+                     src="images/galerie/05_after.jpg" alt="Réalisation combo - après">
+                <img class="img-before absolute inset-0 w-full h-full object-cover object-top opacity-0"
+                     src="images/galerie/05_before.jpg" alt="Réalisation combo - avant">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent pointer-events-none"></div>
+                <div class="absolute bottom-3 inset-x-3 flex items-center justify-between">
+                    <span class="card-state text-[11px] tracking-[0.2em] uppercase text-white font-medium bg-black/30 backdrop-blur-sm px-2.5 py-1 rounded-full">Après</span>
+                    <svg class="w-8 h-8 text-white/50" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/></svg>
+                </div>
+            </div>
+
+            <div class="gallery-card reveal relative overflow-hidden rounded-xl aspect-[4/5]"
+                 data-showing="after" onclick="toggleCard(this)">
+                <img class="img-after absolute inset-0 w-full h-full object-cover object-top"
+                     src="images/galerie/06_after.jpg" alt="Réalisation - après">
+                <img class="img-before absolute inset-0 w-full h-full object-cover object-top opacity-0"
+                     src="images/galerie/06_before.jpg" alt="Réalisation - avant">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent pointer-events-none"></div>
+                <div class="absolute bottom-3 inset-x-3 flex items-center justify-between">
+                    <span class="card-state text-[11px] tracking-[0.2em] uppercase text-white font-medium bg-black/30 backdrop-blur-sm px-2.5 py-1 rounded-full">Après</span>
+                    <svg class="w-8 h-8 text-white/50" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/></svg>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CTA Instagram -->
+        <div class="text-center mt-12 reveal">
+            <p class="text-[16px] text-anthracite/45 mb-5">Retrouvez toutes mes réalisations sur Instagram</p>
+            <a href="https://instagram.com/mlle.tranbeauty" target="_blank"
+               class="inline-flex items-center gap-3 btn-outline border border-gold text-gold px-8 py-3.5 text-[10px] tracking-[0.3em] uppercase font-medium">
+                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+                @mlle.tranbeauty
+            </a>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════ INFOS PRATIQUES ═══════════════════════════ -->
+<section id="infos" class="py-28 md:py-40 px-6 md:px-14 max-w-6xl mx-auto">
+
+    <!-- Header -->
+    <div class="text-center mb-16 reveal">
+        <h2 class="font-serif font-light text-anthracite"
+            style="font-size: clamp(2.5rem, 6vw, 4rem);">
+            Infos <em class="italic">Pratiques</em>
+        </h2>
+        <div class="flex items-center justify-center gap-5 mt-5">
+            <span class="h-px w-14 bg-gold/50"></span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-2.5 h-2.5 text-gold" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2l2.09 6.26L20 10l-5.91 2.74L12 22l-2.09-9.26L4 10l5.91-1.74z"/>
+            </svg>
+            <span class="h-px w-14 bg-gold/50"></span>
+        </div>
+    </div>
+
+    <!-- 3 cards -->
+    <div class="grid md:grid-cols-3 gap-6 mb-14">
+
+        <!-- Localisation -->
+        <div class="info-card bg-sand p-8 rounded-2xl reveal">
+            <div class="w-10 h-10 rounded-full border border-gold/35 flex items-center justify-center mb-6">
+                <svg class="w-4 h-4 text-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+                </svg>
+            </div>
+            <h3 class="font-serif text-xl mb-2 text-anthracite">Localisation</h3>
+            <hr class="divider-gold w-10 mb-4">
+            <p class="text-[15px] text-anthracite/65 leading-relaxed">
+                Rue des Archers 2<br>
+                7000 Mons, Belgique<br>
+                <span class="text-[14px] text-anthracite/45">1<sup>er</sup> étage de l'immeuble</span>
+            </p>
+            <a href="https://maps.app.goo.gl/ANrecwB39jwrYfFS9" target="_blank"
+               class="inline-flex items-center gap-1.5 mt-4 text-[10px] tracking-widest uppercase text-gold hover:text-anthracite transition-colors duration-200">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
+                </svg>
+                Ouvrir dans Maps
+            </a>
+        </div>
+
+        <!-- Sonnette -->
+        <div class="info-card bg-sand p-8 rounded-2xl reveal">
+            <div class="w-10 h-10 rounded-full border border-gold/35 flex items-center justify-center mb-6">
+                <svg class="w-4 h-4 text-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
+                </svg>
+            </div>
+            <h3 class="font-serif text-xl mb-2 text-anthracite">Accès &amp; Sonnette</h3>
+            <hr class="divider-gold w-10 mb-4">
+            <p class="text-[15px] text-anthracite/65 leading-relaxed">
+                La sonnette se trouve <span class="font-medium text-anthracite">à votre gauche</span> à l'entrée de l'immeuble.
+            </p>
+            <!-- Séquence : 11 → cloche -->
+            <div class="mt-4 flex items-center gap-3"> 
+                <p class="text-[15px] text-anthracite/65 leading-relaxed">Tapez</p>
+                <div class="inline-flex items-center bg-warm border border-gold/30 px-4 py-2.5 rounded-full">
+                    <span class="font-serif text-2xl text-gold font-light leading-none">11</span>
+                </div>
+                <svg class="w-4 h-4 text-anthracite/25 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                </svg>
+                <div class="inline-flex items-center bg-warm border border-gold/30 px-4 py-2.5 rounded-full">
+                    <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
+                    </svg>
+                </div>
+            </div>
+            <p class="text-[13px] text-anthracite/45 italic mt-3">Je vous ouvre depuis le 1<sup>er</sup> étage.</p>
+        </div>
+
+        <!-- Parking -->
+        <div class="info-card bg-sand p-8 rounded-2xl reveal">
+            <div class="w-10 h-10 rounded-full border border-gold/35 flex items-center justify-center mb-6">
+                <svg class="w-4 h-4 text-gold" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/>
+                </svg>
+            </div>
+            <h3 class="font-serif text-xl mb-2 text-anthracite">Parking Réservé</h3>
+            <hr class="divider-gold w-10 mb-4">
+            <p class="text-[15px] text-anthracite/65 leading-relaxed">
+                Un parking réservé est mis à votre disposition pour toute la durée de votre rendez-vous.<br><br>
+                <span class="text-[13px] text-anthracite/45 italic">Signalé par le panneau "Mlle Tran Beauty - Salon du Regard".</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Reservation block -->
+    <div class="reveal bg-sand rounded-2xl px-8 md:px-16 py-12 text-center">
+        <h3 class="font-serif font-light text-anthracite mb-2"
+            style="font-size: clamp(1.6rem, 4vw, 2.4rem);">
+            Prendre <em class="italic">rendez-vous</em>
+        </h3>
+        <p class="text-[15px] text-anthracite/55 mb-8 max-w-sm mx-auto">
+            Réservation par téléphone ou Instagram.
+        </p>
+        <div class="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
+            <a href="tel:+32498451649"
+               class="flex items-center gap-3 bg-warm border border-gold/30 px-7 py-3.5 rounded-xl text-[13px] tracking-wide text-anthracite/70 hover:border-gold hover:bg-gold hover:text-warm transition-all duration-300 group">
+                <svg class="w-4 h-4 text-gold group-hover:text-warm transition-colors" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/>
+                </svg>
+                +32 498 45 16 49
+            </a>
+            <a href="https://instagram.com/mlle.tranbeauty" target="_blank"
+               class="flex items-center gap-3 bg-warm border border-gold/30 px-7 py-3.5 rounded-xl text-[13px] tracking-wide text-anthracite/70 hover:border-gold hover:bg-gold hover:text-warm transition-all duration-300 group">
+                <svg class="w-4 h-4 text-gold group-hover:text-warm transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+                @mlle.tranbeauty
+            </a>
+            <!-- <a href="https://www.facebook.com/people/MLLE-TRAN-beauty/61582865394603/" target="_blank"
+               class="flex items-center gap-3 bg-warm border border-gold/30 px-7 py-3.5 rounded-xl text-[13px] tracking-wide text-anthracite/70 hover:border-gold hover:bg-gold hover:text-warm transition-all duration-300 group">
+                <svg class="w-4 h-4 text-gold group-hover:text-warm transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+                Facebook
+            </a> -->
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+<footer id="contact" class="bg-anthracite text-warm py-16 px-6 md:px-14">
+    <div class="max-w-5xl mx-auto">
+        <div class="grid md:grid-cols-3 gap-12 mb-12">
+
+            <!-- Brand -->
+            <div>
+                <p class="font-serif text-2xl text-warm mb-1">Mlle Tran Beauty</p>
+                <p class="text-[10px] tracking-[0.35em] uppercase text-gold mb-5">Salon du Regard</p>
+                <p class="text-[14px] text-warm/45 leading-relaxed mb-4">
+                    L'art du regard sublimé avec délicatesse, expertise et passion.
+                </p>
+                <p class="text-[11px] text-warm/30 leading-relaxed">
+                    Rue des Archers 2 · 7000 Mons<br>
+                    TVA BE1028.104.780
+                </p>
+            </div>
+
+            <!-- Navigation -->
+            <div>
+                <p class="text-[10px] tracking-[0.35em] uppercase text-warm/35 mb-5">Navigation</p>
+                <ul class="space-y-2.5">
+                    <li><a href="#about"    class="text-[15px] text-warm/55 hover:text-gold transition-colors duration-200">À Propos</a></li>
+                    <li><a href="#services" class="text-[15px] text-warm/55 hover:text-gold transition-colors duration-200">Services &amp; Tarifs</a></li>
+                    <li><a href="#galerie"  class="text-[15px] text-warm/55 hover:text-gold transition-colors duration-200">Galerie</a></li>
+                    <li><a href="#infos"    class="text-[15px] text-warm/55 hover:text-gold transition-colors duration-200">Infos Pratiques</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact -->
+            <div>
+                <p class="text-[10px] tracking-[0.35em] uppercase text-warm/35 mb-5">Contact</p>
+                <div class="space-y-3.5">
+                    <a href="tel:+32498451649"
+                       class="flex items-center gap-3 text-[15px] text-warm/55 hover:text-gold transition-colors duration-200">
+                        <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/>
+                        </svg>
+                        +32 498 45 16 49
+                    </a>
+                    <a href="https://instagram.com/mlle.tranbeauty" target="_blank"
+                       class="flex items-center gap-3 text-[15px] text-warm/55 hover:text-gold transition-colors duration-200">
+                        <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                        @mlle.tranbeauty
+                    </a>
+                    <a href="https://www.facebook.com/people/MLLE-TRAN-beauty/61582865394603/" target="_blank"
+                       class="flex items-center gap-3 text-[15px] text-warm/55 hover:text-gold transition-colors duration-200">
+                        <svg class="w-3.5 h-3.5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                        Facebook
+                    </a>
+                    <p class="flex items-center gap-3 text-[15px] text-warm/55">
+                        <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+                        </svg>
+                        Rue des Archers 2, 7000 Mons
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom bar -->
+        <div class="pt-8 border-t border-warm/8 flex flex-col md:flex-row items-center justify-between gap-3">
+            <p class="text-[11px] text-warm/25 tracking-wide">© 2026 Mlle Tran Beauty - Phuong Tran · Tous droits réservés · TVA BE1028.104.780</p>
+            <p class="font-serif italic text-[13px] text-warm/25">Your Brow &amp; Lash Artist</p>
+        </div>
+    </div>
+</footer>
+
+
+<!-- ═══════════════════════════ SCRIPTS ═══════════════════════════ -->
+<script>
+    /* Navbar: scroll effect */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    /* Mobile nav toggle */
+    function toggleNav() {
+        const menu = document.getElementById('mobileNav');
+        const btn  = document.getElementById('burgerBtn');
+        const isHidden = menu.classList.toggle('nav-hidden');
+        btn.classList.toggle('open', !isHidden);
+        document.body.style.overflow = isHidden ? '' : 'hidden';
+    }
+
+    /* Gallery: toggle avant / après */
+    function toggleCard(card) {
+        const isAfter = card.dataset.showing === 'after';
+        card.dataset.showing = isAfter ? 'before' : 'after';
+        card.querySelector('.img-after').style.opacity  = isAfter ? '0' : '1';
+        card.querySelector('.img-before').style.opacity = isAfter ? '1' : '0';
+        const state = card.querySelector('.card-state');
+        state.textContent       = isAfter ? 'Avant' : 'Après';
+        state.style.background  = isAfter ? 'rgba(184,147,106,0.65)' : 'rgba(0,0,0,0.30)';
+    }
+
+    /* Scroll-reveal with IntersectionObserver */
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    /* Hero reveals on load */
+    window.addEventListener('load', () => {
+        const heroEls = document.querySelectorAll('.hero-bg .reveal');
+        heroEls.forEach((el, i) => {
+            setTimeout(() => el.classList.add('show'), 200 + i * 160);
+        });
+    });
+</script>
+
+</body>
+</html>
